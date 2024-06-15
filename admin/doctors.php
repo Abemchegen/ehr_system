@@ -90,6 +90,11 @@
                         <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">Patients</p></a></div>
                     </td>
                 </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-report">
+                        <a href="report.php" class="non-style-link-menu"><div><p class="menu-text">Report</p></a></div>
+                    </td>
+                </tr>
 
             </table>
         </div>
@@ -117,8 +122,7 @@
                                     echo "<option value='$c'><br/>";
                                 };
 
-                            echo ' </datalist>';
-?>
+                                echo ' </datalist>';?>
                             
                        
                             <input type="Submit" value="Search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
@@ -142,7 +146,6 @@
                     <td width="10%">
                         <button  class="btn-label"  style="display: flex;justify-content: center;align-items: center;"><img src="../img/calendar.svg" width="100%"></button>
                     </td>
-
 
                 </tr>
                
@@ -181,25 +184,25 @@
                         <table width="93%" class="sub-table scrolldown" border="0">
                         <thead>
                         <tr>
-                                <th class="table-headin">
-                                    
+                            <th class="table-headin">
                                 
-                                Doctor Name
+                            
+                            Doctor Name
+                            
+                            </th>
+                            <th class="table-headin">
+                                Email
+                            </th>
+                            <th class="table-headin">
                                 
-                                </th>
-                                <th class="table-headin">
-                                    Email
-                                </th>
-                                <th class="table-headin">
-                                    
-                                    Specialties
-                                    
-                                </th>
-                                <th class="table-headin">
-                                    
-                                    Events
-                                    
-                                </tr>
+                                Specialties
+                                
+                            </th>
+                            <th class="table-headin">
+                                
+                                Events
+                                
+                            </tr>
                         </thead>
                         <tbody>
                         
@@ -243,7 +246,7 @@
                                         '.substr($email,0,20).'
                                         </td>
                                         <td>
-                                            '.substr($spcil_name,0,20).'
+                                            '.substr($spcil_name,0,35).'
                                         </td>
 
                                         <td>
@@ -269,18 +272,28 @@
                         </center>
                    </td> 
                 </tr>
-                       
-                        
-                        
+                <tr>
+                    <td colspan = "4">
+                        <!-- Download Doctors CSV link -->
+                        <a class="non-style-link" href="download_doctors_csv.php"><button class="btn-primary-soft btn button-icon" style="display: flex; justify-content: center; align-items: center; margin: 20px;">Download Doctors Table</button></a>
+                    </td>
+                
+                </tr>
+
+                           
             </table>
         </div>
     </div>
     <?php 
-    if($_GET){
-        
-        $id=$_GET["id"];
+    // Check if action parameter is set and equals 'download_csv'
+    if (isset($_GET['action'])){
+
         $action=$_GET["action"];
-        if($action=='drop'){
+        $id=$_GET["id"];
+        
+        if($action == 'drop') {
+        
+            
             $nameget=$_GET["name"];
             echo '
             <div id="popup1" class="overlay">
@@ -301,7 +314,8 @@
             </div>
             </div>
             ';
-        }elseif($action=='view'){
+        }elseif($action =='view'){
+            $id=$_GET["id"];
             $sqlmain= "select * from doctor where docid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
@@ -334,60 +348,43 @@
                             </tr>
                             
                             <tr>
-                                
                                 <td class="label-td" colspan="2">
                                     <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
                                     '.$name.'<br><br>
                                 </td>
-                                
+                                                        
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="Email" class="form-label">Email: </label>
+                                    '.$email.'<br><br>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
-                                </td>
+                          
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="nic" class="form-label">NIC: </label>
+                                    '.$nic.'<br><br>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
-                                </td>
+                           
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="Tele" class="form-label">Telephone: </label>
+                                    '.$tele.'<br><br>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
-                                </td>
+                            
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="spec" class="form-label">Specialties: </label>
-                                    
+                                    '.$spcil_name.'<br><br>
                                 </td>
-                            </tr>
-                            <tr>
-                            <td class="label-td" colspan="2">
-                            '.$spcil_name.'<br><br>
-                            </td>
+                           
                             </tr>
                             <tr>
                                 <td colspan="2">
+                                
                                     <a href="doctors.php"><input type="button" value="OK" class="login-btn btn-primary-soft btn" ></a>
                                 
                                     
@@ -395,7 +392,6 @@
                 
                             </tr>
                            
-
                         </table>
                         </div>
                     </center>
@@ -567,6 +563,7 @@
         ';
             }
         }elseif($action=='edit'){
+            $id=$_GET["id"];
             $sqlmain= "select * from doctor where docid='$id'";
             $result= $database->query($sqlmain);
             $row=$result->fetch_assoc();
@@ -608,7 +605,7 @@
                                     <tr>
                                         <td>
                                             <p style="padding: 0;margin: 0;text-align: left;font-size: 25px;font-weight: 500;">Edit Doctor Details.</p>
-                                        Doctor ID : '.$id.' (Auto Generated)<br><br>
+                                        Doctor ID : '.$id.' <br><br>
                                         </td>
                                     </tr>
                                     <tr>
