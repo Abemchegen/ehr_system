@@ -42,7 +42,7 @@ include("connection.php");
 
 if($_POST){
 
-    $result= $database->query("select * from webuser");
+    $result= $database->query("select * from user");
 
     $fname=$_SESSION['personal']['fname'];
     $lname=$_SESSION['personal']['lname'];
@@ -56,7 +56,7 @@ if($_POST){
     $cpassword=$_POST['cpassword'];
     
     if ($newpassword==$cpassword){
-        $sqlmain= "select * from webuser where email=?;";
+        $sqlmain= "select * from user where email=?;";
         $stmt = $database->prepare($sqlmain);
         $stmt->bind_param("s",$email);
         $stmt->execute();
@@ -66,7 +66,7 @@ if($_POST){
         }else{
             //TODO
             $database->query("insert into patient(pemail,pname,ppassword, paddress, pnic,pdob,ptel) values('$email','$name','$newpassword','$address','$nic','$dob','$tele');");
-            $database->query("insert into webuser values('$email','p')");
+            $database->query("insert into user values('$email','p')");
 
             //print_r("insert into patient values($pid,'$email','$fname','$lname','$newpassword','$address','$nic','$dob','$tele');");
             $_SESSION["user"]=$email;

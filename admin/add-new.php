@@ -40,7 +40,7 @@
 
     if($_POST){
         //print_r($_POST);
-        $result= $database->query("select * from webuser");
+        $result= $database->query("select * from user");
         $name=$_POST['name'];
         $nic=$_POST['nic'];
         $spec=$_POST['spec'];
@@ -51,13 +51,13 @@
         
         if ($password==$cpassword){
             $error='3';
-            $result= $database->query("select * from webuser where email='$email';");
+            $result= $database->query("select * from user where email='$email';");
             if($result->num_rows==1){
                 $error='1';
             }else{
 
                 $sql1="insert into doctor(docemail,docname,docpassword,docnic,doctel,specialties) values('$email','$name','$password','$nic','$tele',$spec);";
-                $sql2="insert into webuser values('$email','d')";
+                $sql2="insert into user values('$email','d')";
                 $database->query($sql1);
                 $database->query($sql2);
 

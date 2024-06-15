@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="css/login.css">
         
     <title>Login</title>
-
-    
     
 </head>
 <body>
@@ -45,7 +43,7 @@
         
         $error='<label for="promter" class="form-label"></label>';
 
-        $result= $database->query("select * from webuser where email='$email'");
+        $result= $database->query("select * from user where email='$email'");
         if($result->num_rows==1){
             $utype=$result->fetch_assoc()['usertype'];
             if ($utype=='p'){
@@ -129,7 +127,7 @@
         <div class="form-body">
             <tr>
                 <td>
-                    <p class="sub-text">Login with your details to continue</p>
+                    <p class="sub-text">Login to continue</p>
                 </td>
             </tr>
             <tr>

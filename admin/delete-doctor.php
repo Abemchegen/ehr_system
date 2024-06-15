@@ -18,7 +18,7 @@
         $id=$_GET["id"];
         $result001= $database->query("select * from doctor where docid=$id;");
         $email=($result001->fetch_assoc())["docemail"];
-        $sql= $database->query("delete from webuser where email='$email';");
+        $sql= $database->query("delete from user where email='$email';");
         $sql= $database->query("delete from doctor where docemail='$email';");
         //print_r($email);
         header("location: doctors.php");

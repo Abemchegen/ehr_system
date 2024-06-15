@@ -37,7 +37,7 @@
         $result001 = $stmt->get_result();
         $email=($result001->fetch_assoc())["pemail"];
 
-        $sqlmain= "delete from webuser where email=?;";
+        $sqlmain= "delete from user where email=?;";
         $stmt = $database->prepare($sqlmain);
         $stmt->bind_param("s",$email);
         $stmt->execute();
