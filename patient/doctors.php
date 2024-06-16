@@ -435,7 +435,7 @@
             </div>
             ';
         }
-        }elseif($action=='edit'){
+        elseif($action=='edit'){
             $sqlmain= "select * from doctor where docid=?";
             $stmt = $database->prepare($sqlmain);
             $stmt->bind_param("i",$id);
@@ -620,13 +620,11 @@
                             <br><br>
                         </center>
                 </div>
-                </div>
-    ';
-
-
+                </div>';
 
         }; 
     };
+}
 
 ?>
 </div>

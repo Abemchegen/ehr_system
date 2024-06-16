@@ -21,8 +21,6 @@
 <body>
     <?php
 
-    //learn from w3schools.com
-
     session_start();
 
     if(isset($_SESSION["user"])){
@@ -36,7 +34,6 @@
         header("location: ../login.php");
     }
     
-
     //import database
     include("../connection.php");
     $sqlmain= "select * from patient where pemail=?";
@@ -52,7 +49,7 @@
     //echo $userid;
     //echo $username;
     
-    date_default_timezone_set('Asia/Kolkata');
+    date_default_timezone_set('Africa/Addis_Ababa');
 
     $today = date('Y-m-d');
 
@@ -187,12 +184,8 @@
                             Today's Date
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
-
-                                
+                            <?php        
                                 echo $today;
-
-                                
 
                         ?>
                         </p>
@@ -213,8 +206,6 @@
                     
                 </tr>
                 
-                
-                
                 <tr>
                    <td colspan="4">
                        <center>
@@ -223,10 +214,7 @@
                             
                         <tbody>
                         
-                            <?php
-
-                                
-                                
+                            <?php 
 
                                 if($result->num_rows==0){
                                     echo '<tr>
@@ -288,7 +276,6 @@
                                     }
                                     echo "</tr>";
                                     
-                                    
                                     // echo '<tr>
                                     //     <td> &nbsp;'.
                                     //     substr($title,0,30)
@@ -324,8 +311,6 @@
                    </td> 
                 </tr>
                        
-                        
-                        
             </table>
         </div>
     </div>

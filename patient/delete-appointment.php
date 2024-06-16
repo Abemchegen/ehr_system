@@ -2,15 +2,13 @@
 
     session_start();
 
-    if(isset($_SESSION["user"])){
-        if(($_SESSION["user"])=="" or $_SESSION['usertype']!='a'){
-            header("location: ../login.php");
-        }
-
-    }else{
+    if(!isset($_SESSION["user"]) || ($_SESSION["user"])==""){
         header("location: ../login.php");
+        exit();
     }
-    
+    elseif ($_SESSION['usertype']!='a'){
+        header("location: appointment.php");  
+    }
     
     if($_GET){
         //import database
@@ -22,9 +20,10 @@
         $stmt = $database->prepare($sqlmain);
         $stmt->bind_param("i",$id);
         $stmt->execute();
+        echo "here";
         //$sql= $database->query("delete from doctor where docemail='$email';");
         //print_r($email);
-        header("location: appointment.php");
+        exit();
     }
 
 

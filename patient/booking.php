@@ -55,7 +55,7 @@
     
 
 
-    date_default_timezone_set('Asia/Kolkata');
+    date_default_timezone_set('Africa/Addis_Ababa');
 
     $today = date('Y-m-d');
 
@@ -149,10 +149,9 @@
                                                 $d=$row00["title"];
                                                
                                                 echo "<option value='$d'><br/>";
-                                                                                         };
+                                            };
 
-                                        echo ' </datalist>';
-            ?>
+                                        echo ' </datalist>';   ?>
                                         
                                 
                                         <input type="Submit" value="Search" class="login-btn btn-primary btn" style="padding-left: 25px;padding-right: 25px;padding-top: 10px;padding-bottom: 10px;">
@@ -163,12 +162,8 @@
                             Today's Date
                         </p>
                         <p class="heading-sub12" style="padding: 0;margin: 0;">
-                            <?php 
-
-                                
+                            <?php   
                                 echo $today;
-
-                                
 
                         ?>
                         </p>
@@ -187,9 +182,7 @@
                         
                     </td>
                     
-                </tr>
-                
-                
+                </tr>               
                 
                 <tr>
                    <td colspan="4">
@@ -231,13 +224,8 @@
                                         <form action="booking-complete.php" method="post">
                                             <input type="hidden" name="scheduleid" value="'.$scheduleid.'" >
                                             <input type="hidden" name="apponum" value="'.$apponum.'" >
-                                            <input type="hidden" name="date" value="'.$today.'" >
-
-                                        
-                                    
-                                    ';
+                                            <input type="hidden" name="date" value="'.$today.'" >';
                                      
-
                                     echo '
                                     <td style="width: 50%;" rowspan="2">
                                             <div  class="dashboard-items search-items"  >
@@ -257,7 +245,7 @@
                                                             Session Title: '.$title.'<br>
                                                             Session Scheduled Date: '.$scheduledate.'<br>
                                                             Session Starts : '.$scheduletime.'<br>
-                                                            Channeling fee : <b>LKR.2 000.00</b>
+                                                            Card fee : <b> Birr 500.00</b>
 
                                                         </div>
                                                         <br>
@@ -265,9 +253,7 @@
                                                 </div>
                                                         
                                             </div>
-                                        </td>
-                                        
-                                        
+                                        </td>  
                                         
                                         <td style="width: 25%;">
                                             <div  class="dashboard-items search-items"  >
@@ -296,35 +282,20 @@
                                             </td>
                                         </tr>
                                         '; 
-                                        
-
-
-
-
                                 }
-
-
-
-                            }
-                            
+                            } 
                             ?>
- 
                             </tbody>
-
                         </table>
                         </div>
                         </center>
                    </td> 
                 </tr>
-                       
-                        
-                        
+                  
             </table>
         </div>
     </div>
-    
-    
-   
+
     </div>
 
 </body>
