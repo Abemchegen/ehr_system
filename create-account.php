@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/animations.css">  
     <link rel="stylesheet" href="css/main.css">  
     <link rel="stylesheet" href="css/signup.css">
-        
     <title>Create Account</title>
     <style>
         .container{
@@ -17,82 +16,73 @@
 </head>
 <body>
 <?php
-
-//learn from w3schools.com
-//Unset all the server side variables
-
 session_start();
 
-$_SESSION["user"]="";
-$_SESSION["usertype"]="";
+$_SESSION["user"] = "";
+$_SESSION["usertype"] = "";
 
 // Set the new timezone
-date_default_timezone_set('Asia/Kolkata');
+date_default_timezone_set('Africa/Addis_Ababa');
 $date = date('Y-m-d');
+$_SESSION["date"] = $date;
 
-$_SESSION["date"]=$date;
-
-
-//import database
+// Import database and validation classes
 include("connection.php");
+include("Validation.php");
 
+$validator = new Validation();
+$error = '';
 
-
-
-
-if($_POST){
-
-    $result= $database->query("select * from user");
-
-    $fname=$_SESSION['personal']['fname'];
-    $lname=$_SESSION['personal']['lname'];
-    $name=$fname." ".$lname;
-    $address=$_SESSION['personal']['address'];
-    $nic=$_SESSION['personal']['nic'];
-    $dob=$_SESSION['personal']['dob'];
-    $email=$_POST['newemail'];
-    $tele=$_POST['tele'];
-    $newpassword=$_POST['newpassword'];
-    $cpassword=$_POST['cpassword'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve and sanitize inputs
+    $email = $validator->sanitizeInput($_POST['newemail']);
+    $tele = $validator->sanitizeInput($_POST['tele']);
+    $newpassword = $validator->sanitizeInput($_POST['newpassword']);
+    $cpassword = $validator->sanitizeInput($_POST['cpassword']);
     
-    if ($newpassword==$cpassword){
-        $sqlmain= "select * from user where email=?;";
-        $stmt = $database->prepare($sqlmain);
-        $stmt->bind_param("s",$email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if($result->num_rows==1){
-            $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>';
-        }else{
-            //TODO
-            $database->query("insert into patient(pemail,pname,ppassword, paddress, pnic,pdob,ptel) values('$email','$name','$newpassword','$address','$nic','$dob','$tele');");
-            $database->query("insert into user values('$email','p')");
+    // Validate inputs
+    $emailValidation = $validator->validateEmail($email);
+    $phoneValidation = $validator->validatePhoneNumber($tele);
+    $passwordValidation = $validator->validatePassword($newpassword);
+    $passwordMatchValidation = $validator->passwordsMatch($newpassword, $cpassword);
 
-            //print_r("insert into patient values($pid,'$email','$fname','$lname','$newpassword','$address','$nic','$dob','$tele');");
-            $_SESSION["user"]=$email;
-            $_SESSION["usertype"]="p";
-            $_SESSION["username"]=$fname;
+    // Check for validation errors
+    if ($emailValidation !== true) {
+        $error = $emailValidation;
+    } elseif ($phoneValidation !== true) {
+        $error = $phoneValidation;
+    } elseif ($passwordValidation !== true) {
+        $error = $passwordValidation;
+    } elseif ($passwordMatchValidation !== true) {
+        $error = $passwordMatchValidation;
+    } else {
+        // Proceed with database operations
+        $result = $database->query("SELECT * FROM user WHERE email='$email'");
+        
+        if ($result->num_rows == 1) {
+            $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Already have an account for this Email address.</label>';
+        } else {
+            $fname = $_SESSION['personal']['fname'];
+            $lname = $_SESSION['personal']['lname'];
+            $name = $fname . " " . $lname;
+            $address = $_SESSION['personal']['address'];
+            $nic = $_SESSION['personal']['nic'];
+            $dob = $_SESSION['personal']['dob'];
+
+            $database->query("INSERT INTO patient(pemail, pname, ppassword, paddress, pnic, pdob, ptel) VALUES('$email', '$name', '$newpassword', '$address', '$nic', '$dob', '$tele')");
+            $database->query("INSERT INTO user(email, usertype) VALUES('$email', 'p')");
+
+            $_SESSION["user"] = $email;
+            $_SESSION["usertype"] = "p";
+            $_SESSION["username"] = $fname;
 
             header('Location: patient/index.php');
-            $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;"></label>';
+            exit();
         }
-        
-    }else{
-        $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Password Conformation Error! Reconform Password</label>';
     }
-
-
-
-    
-}else{
-    //header('location: signup.php');
-    $error='<label for="promter" class="form-label"></label>';
 }
-
 ?>
-
-
-    <center>
+<center>
     <div class="container">
         <table border="0" style="width: 69%;">
             <tr>
@@ -102,7 +92,7 @@ if($_POST){
                 </td>
             </tr>
             <tr>
-                <form action="" method="POST" >
+                <form action="" method="POST">
                 <td class="label-td" colspan="2">
                     <label for="newemail" class="form-label">Email: </label>
                 </td>
@@ -111,7 +101,6 @@ if($_POST){
                 <td class="label-td" colspan="2">
                     <input type="email" name="newemail" class="input-text" placeholder="Email Address" required>
                 </td>
-                
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
@@ -120,7 +109,7 @@ if($_POST){
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
-                    <input type="tel" name="tele" class="input-text"  placeholder="ex: 0712345678" pattern="[0]{1}[0-9]{9}" >
+                    <input type="tel" name="tele" class="input-text" placeholder="ex: 0712345678" pattern="[0]{1}[0-9]{9}" required>
                 </td>
             </tr>
             <tr>
@@ -135,31 +124,26 @@ if($_POST){
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
-                    <label for="cpassword" class="form-label">Conform Password: </label>
+                    <label for="cpassword" class="form-label">Confirm Password: </label>
                 </td>
             </tr>
             <tr>
                 <td class="label-td" colspan="2">
-                    <input type="password" name="cpassword" class="input-text" placeholder="Conform Password" required>
+                    <input type="password" name="cpassword" class="input-text" placeholder="Confirm Password" required>
                 </td>
             </tr>
-     
             <tr>
-                
-                <td colspan="2">
-                    <?php echo $error ?>
-
+                <td class="label-td" colspan="2">
+                    <span style="color: red;"><?php echo $error; ?></span>
                 </td>
             </tr>
-            
             <tr>
                 <td>
-                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn" >
+                    <input type="reset" value="Reset" class="login-btn btn-primary-soft btn">
                 </td>
                 <td>
                     <input type="submit" value="Sign Up" class="login-btn btn-primary btn">
                 </td>
-
             </tr>
             <tr>
                 <td colspan="2">
@@ -169,11 +153,9 @@ if($_POST){
                     <br><br><br>
                 </td>
             </tr>
-
-                    </form>
+                </form>
             </tr>
         </table>
-
     </div>
 </center>
 </body>
