@@ -4,81 +4,117 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">  
+    <link rel="stylesheet" href="css/main.css">  
     <link rel="stylesheet" href="css/login.css">
-    
+        
     <title>Login</title>
+    
 </head>
 <body>
     <?php
+
+    //learn from w3schools.com
+    //Unset all the server side variables
+
     session_start();
 
-    $_SESSION["user"] = "";
-    $_SESSION["usertype"] = "";
-
+    $_SESSION["user"]="";
+    $_SESSION["usertype"]="";
+    
     // Set the new timezone
-    date_default_timezone_set('Africa/Addis_Ababa');
+    date_default_timezone_set('Asia/Kolkata');
     $date = date('Y-m-d');
 
-    $_SESSION["date"] = $date;
+    $_SESSION["date"]=$date;
+    
 
-    // Import database and validation class
+    //import database
     include("connection.php");
-    include("Validation.php");
 
-    $validator = new Validation();
+    
 
-    $error = '<label for="promter" class="form-label">&nbsp;</label>';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $validator->sanitizeInput($_POST['useremail']);
-        $password = $validator->sanitizeInput($_POST['userpassword']);
+
+    if($_POST){
+
+        $email=$_POST['useremail'];
+        $password=$_POST['userpassword'];
         
-        // Validate email and password
-        $emailValidation = $validator->validateEmail($email);
-        $passwordValidation = $validator->validatePassword($password);
+        $error='<label for="promter" class="form-label"></label>';
 
-        if ($emailValidation === true && $passwordValidation === true) {
-            $result = $database->query("SELECT * FROM user WHERE email='$email'");
-            if ($result->num_rows == 1) {
-                $utype = $result->fetch_assoc()['usertype'];
-                if ($utype == 'p') {
-                    $checker = $database->query("SELECT * FROM patient WHERE pemail='$email' AND ppassword='$password'");
-                    if ($checker->num_rows == 1) {
-                        $_SESSION['user'] = $email;
-                        $_SESSION['usertype'] = 'p';
-                        header('Location: patient/index.php');
-                    } else {
-                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
-                    }
-                } elseif ($utype == 'a') {
-                    $checker = $database->query("SELECT * FROM admin WHERE aemail='$email' AND apassword='$password'");
-                    if ($checker->num_rows == 1) {
-                        $_SESSION['user'] = $email;
-                        $_SESSION['usertype'] = 'a';
-                        header('Location: admin/index.php');
-                    } else {
-                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
-                    }
-                } elseif ($utype == 'd') {
-                    $checker = $database->query("SELECT * FROM doctor WHERE docemail='$email' AND docpassword='$password'");
-                    if ($checker->num_rows == 1) {
-                        $_SESSION['user'] = $email;
-                        $_SESSION['usertype'] = 'd';
-                        header('Location: doctor/index.php');
-                    } else {
-                        $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
-                    }
+        $result= $database->query("select * from user where email='$email'");
+        if($result->num_rows==1){
+            $utype=$result->fetch_assoc()['usertype'];
+            if ($utype=='p'){
+                //TODO
+                $checker = $database->query("select * from patient where pemail='$email' and ppassword='$password'");
+                if ($checker->num_rows==1){
+
+
+                    //   Patient dashbord
+                    $_SESSION['user']=$email;
+                    $_SESSION['usertype']='p';
+                    
+                    header('location: patient/index.php');
+
+                }else{
+                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
                 }
-            } else {
-                $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">We can\'t find any account with this email.</label>';
+
+            }elseif($utype=='a'){
+                //TODO
+                $checker = $database->query("select * from admin where aemail='$email' and apassword='$password'");
+                if ($checker->num_rows==1){
+
+
+                    //   Admin dashbord
+                    $_SESSION['user']=$email;
+                    $_SESSION['usertype']='a';
+                    
+                    header('location: admin/index.php');
+
+                }else{
+                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+                }
+
+
+            }elseif($utype=='d'){
+                //TODO
+                $checker = $database->query("select * from doctor where docemail='$email' and docpassword='$password'");
+                if ($checker->num_rows==1){
+
+
+                    //   doctor dashbord
+                    $_SESSION['user']=$email;
+                    $_SESSION['usertype']='d';
+                    header('location: doctor/index.php');
+
+                }else{
+                    $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">Wrong credentials: Invalid email or password</label>';
+                }
+
             }
-        } else {
-            $error = '<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">' . ($emailValidation !== true ? $emailValidation : $passwordValidation) . '</label>';
+            
+        }else{
+            $error='<label for="promter" class="form-label" style="color:rgb(255, 62, 62);text-align:center;">We cant found any acount for this email.</label>';
         }
+
+
+
+
+
+
+        
+    }else{
+        $error='<label for="promter" class="form-label">&nbsp;</label>';
     }
+
     ?>
+
+
+
+
 
     <center>
     <div class="container">
@@ -95,7 +131,7 @@
                 </td>
             </tr>
             <tr>
-                <form action="" method="POST">
+                <form action="" method="POST" >
                 <td class="label-td">
                     <label for="useremail" class="form-label">Email: </label>
                 </td>
@@ -110,16 +146,20 @@
                     <label for="userpassword" class="form-label">Password: </label>
                 </td>
             </tr>
+
             <tr>
                 <td class="label-td">
-                    <input type="password" name="userpassword" class="input-text" placeholder="Password" required>
+                    <input type="Password" name="userpassword" class="input-text" placeholder="Password" required>
                 </td>
             </tr>
+
+
             <tr>
                 <td><br>
                 <?php echo $error ?>
                 </td>
             </tr>
+
             <tr>
                 <td>
                     <input type="submit" value="Login" class="login-btn btn-primary btn">
@@ -134,9 +174,14 @@
                     <br><br><br>
                 </td>
             </tr>
-            </form>
+                        
+                        
+    
+                        
+                    </form>
         </table>
+
     </div>
-    </center>
+</center>
 </body>
 </html>
