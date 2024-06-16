@@ -89,6 +89,11 @@
                         <a href="patient.php" class="non-style-link-menu  non-style-link-menu-active"><div><p class="menu-text">Patients</p></a></div>
                     </td>
                 </tr>
+                <tr class="menu-row">
+                    <td class="menu-btn menu-icon-report">
+                        <a href="report.php" class="non-style-link-menu"><div><p class="menu-text">Report</p></a></div>
+                    </td>
+                </tr>
 
             </table>
         </div>
@@ -318,10 +323,6 @@
                                 
                                 <td class="label-td" colspan="2">
                                     <label for="name" class="form-label">Patient ID: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
                                     P-'.$id.'<br><br>
                                 </td>
                                 
@@ -331,10 +332,6 @@
                                 
                                 <td class="label-td" colspan="2">
                                     <label for="name" class="form-label">Name: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
                                     '.$name.'<br><br>
                                 </td>
                                 
@@ -342,52 +339,31 @@
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="Email" class="form-label">Email: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$email.'<br><br>
+                                    '.$email.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="nic" class="form-label">NIC: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                '.$nic.'<br><br>
+                                    '.$nic.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
                                     <label for="Tele" class="form-label">Telephone: </label>
+                                    '.$tele.'<br><br>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="label-td" colspan="2">
-                                '.$tele.'<br><br>
+                                    <label for="spec" class="form-label">Address: </label>        
+                                   '.$address.'<br><br>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
-                                    <label for="spec" class="form-label">Address: </label>
-                                    
-                                </td>
-                            </tr>
-                            <tr>
-                            <td class="label-td" colspan="2">
-                            '.$address.'<br><br>
-                            </td>
                             </tr>
                             <tr>
                                 
                                 <td class="label-td" colspan="2">
                                     <label for="name" class="form-label">Date of Birth: </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label-td" colspan="2">
                                     '.$dob.'<br><br>
                                 </td>
                                 
