@@ -21,7 +21,6 @@
 <body>
     <?php
 
-    //learn from w3schools.com
 
     session_start();
 
@@ -319,7 +318,7 @@
                         <h2>Booking Successfully.</h2>
                         <a class="close" href="appointment.php">&times;</a>
                         <div class="content">
-                        Your Appointment number is '.$id.'.<br><br>
+                        Your Appointment number is '.$id.'. Check your email for more details<br><br>
                             
                         </div>
                         <div style="display: flex;justify-content: center;">
