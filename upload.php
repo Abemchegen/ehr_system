@@ -31,17 +31,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['profile_image'])) {
         $tableName = '';
         $imageColumnName = 'image'; // Column name where image path is stored
 
-        if ($_SESSION['usertype'] == 'a') {
-            $tableName = 'admin';
-            $emailColumnName = 'email';
-        } elseif ($_SESSION['usertype'] == 'd') {
-            $tableName = 'doctor';
-            $emailColumnName = 'docemail';
-        } elseif ($_SESSION['usertype'] == 'p') {
-            $tableName = 'patient';
-            $emailColumnName = 'pemail';
+        switch ($_SESSION['usertype']) {
+            case 'a':
+                $tableName = 'admin';
+                $emailColumnName = 'email';
+                $redirectPage = 'admin/index.php';
+                break;
+            case 'd':
+                $tableName = 'doctor';
+                $emailColumnName = 'docemail';
+                $redirectPage = 'doctor/index.php';
+                break;
+            case 'p':
+                $tableName = 'patient';
+                $emailColumnName = 'pemail';
+                $redirectPage = 'patient/index.php';
+                break;
+            default:
+                // Handle default case if needed
+                break;
         }
-
         // Update image path in the database
         $updateSql = "UPDATE $tableName SET $imageColumnName = ? WHERE $emailColumnName = ?";
         $stmt = $database->prepare($updateSql);
@@ -50,7 +59,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['profile_image'])) {
         $stmt->close();
 
         // Redirect or refresh the page to reflect changes
-        header("Location: index.php");
+        header("Location: $redirectPage");
+        exit;   
     } else {
         echo "Error uploading file.";
     }
