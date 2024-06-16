@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate inputs
     $fnameValidation = $validator->validateUsername($fname); // Assuming first name should be alphanumeric
     $lnameValidation = $validator->validateUsername($lname); // Assuming last name should be alphanumeric
-    $addressValidation = $validator->sanitizeInput($address); // Assuming address can contain any characters
+    $addressValidation = $validator->validateCustomString($address); // Assuming address can contain any characters
     $nicValidation = $validator->validateUsername($nic); // Assuming NIC should be alphanumeric
     $dobValidation = $validator->validateDate($dob, 'Y-m-d'); // Assuming date of birth should be in YYYY-MM-DD format
 

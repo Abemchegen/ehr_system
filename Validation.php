@@ -13,6 +13,15 @@ class Validation {
         return true;
     }
 
+    public function validateCustomString($input) {
+        // Regular expression to match allowed characters: numbers, alphabets, spaces, underscores, hyphens, and commas
+        if (preg_match('/^[a-zA-Z0-9 _,-]*$/', $input)) {
+            return true; // Valid input
+        } else {
+            return "Invalid input: Only numbers, alphabets, spaces, underscores, hyphens, and commas are allowed.";
+        }
+    }
+
     // Validate password strength
     public function validatePassword($password) {
         if (strlen($password) < 8) {

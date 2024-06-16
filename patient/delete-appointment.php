@@ -1,6 +1,6 @@
-<?php
+    <?php
 
-    session_start();
+        session_start();
 
     if(!isset($_SESSION["user"]) || ($_SESSION["user"])==""){
         header("location: ../login.php");
@@ -27,4 +27,4 @@
     }
 
 
-?>
+    ?>
