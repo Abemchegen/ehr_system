@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Image Upload</title>
@@ -126,27 +127,23 @@
         <?php
         $currentPage = basename($_SERVER['SCRIPT_NAME']);
         $menuItems = [
-            'index.php' => 'Home',
-            'doctors.php' => 'All Doctors',
-            'schedule.php' => 'Scheduled Sessions',
-            'appointment.php' => 'My Bookings',
-            'settings.php' => 'Settings'
-        ];
-        $menuIcons = [
-            'index.php' => 'home',
-            'doctors.php' => 'doctor',
-            'schedule.php' => 'session',
-            'appointment.php' => 'appoinment',
-            'settings.php' => 'settings'
+            'index.php' => ['Home', 'home'],
+            'doctors.php' => ['All Doctors', 'doctor'],
+            'schedule.php' => ['Scheduled Sessions', 'session'],
+            'appointment.php' => ['My Bookings', 'appoinment'],
+            'news.php' => ['Health News', 'newspaper'], // Added Health News menu item with icon
+            'settings.php' => ['Settings', 'settings']
         ];
 
-        foreach ($menuItems as $page => $label) {
+        foreach ($menuItems as $page => list($label, $icon)) {
             $activeClass = ($currentPage == $page) ? 'menu-active' : '';
+            
             echo "<tr class='menu-row'>";
-            echo "<td class='menu-btn menu-icon-$menuIcons[$page] $activeClass'>";
+            echo "<td class='menu-btn menu-icon-$icon $activeClass'>";
             echo "<a href='$page' class='non-style-link-menu'><div><p class='menu-text'>$label</p></div></a>";
             echo "</td>";
             echo "</tr>";
+         
         }
         ?>
 
