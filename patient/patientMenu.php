@@ -7,7 +7,7 @@
     <!-- Include Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-         .upload-form {
+        .upload-form {
             display: flex;
             align-items: center;
         }
@@ -31,6 +31,26 @@
 
         .custom-file-input {
             display: none;
+        }
+
+        .menu-container {
+            width: 100%;
+        }
+
+        .menu-row {
+            width: 100%;
+        }
+
+        .menu-btn {
+            padding: 10px;
+        }
+
+        .menu-text {
+            margin: 0;
+        }
+
+        .menu-active {
+            border-left: 5px solid #007bff;
         }
     </style>
 </head>
@@ -102,31 +122,34 @@
                 </table>
             </td>
         </tr>
-        <tr class="menu-row">
-            <td class="menu-btn menu-icon-home ">
-                <a href="index.php" class="non-style-link-menu "><div><p class="menu-text">Home</p></div></a>
-            </td>
-        </tr>
-        <tr class="menu-row">
-            <td class="menu-btn menu-icon-doctor menu-active menu-icon-doctor-active">
-                <a href="doctors.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">All Doctors</p></div></a>
-            </td>
-        </tr>
-        <tr class="menu-row">
-            <td class="menu-btn menu-icon-session">
-                <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">Scheduled Sessions</p></div></a>
-            </td>
-        </tr>
-        <tr class="menu-row">
-            <td class="menu-btn menu-icon-appoinment">
-                <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Bookings</p></a></div>
-            </td>
-        </tr>
-        <tr class="menu-row">
-            <td class="menu-btn menu-icon-settings">
-                <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></div></a>
-            </td>
-        </tr>
+
+        <?php
+        $currentPage = basename($_SERVER['SCRIPT_NAME']);
+        $menuItems = [
+            'index.php' => 'Home',
+            'doctors.php' => 'All Doctors',
+            'schedule.php' => 'Scheduled Sessions',
+            'appointment.php' => 'My Bookings',
+            'settings.php' => 'Settings'
+        ];
+        $menuIcons = [
+            'index.php' => 'home',
+            'doctors.php' => 'doctor',
+            'schedule.php' => 'session',
+            'appointment.php' => 'appoinment',
+            'settings.php' => 'settings'
+        ];
+
+        foreach ($menuItems as $page => $label) {
+            $activeClass = ($currentPage == $page) ? 'menu-active' : '';
+            echo "<tr class='menu-row'>";
+            echo "<td class='menu-btn menu-icon-$menuIcons[$page] $activeClass'>";
+            echo "<a href='$page' class='non-style-link-menu'><div><p class='menu-text'>$label</p></div></a>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
+
     </table>
 </div>
 

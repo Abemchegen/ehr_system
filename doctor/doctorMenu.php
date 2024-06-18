@@ -7,7 +7,7 @@
     <!-- Include Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-         .upload-form {
+        .upload-form {
             display: flex;
             align-items: center;
         }
@@ -32,18 +32,41 @@
         .custom-file-input {
             display: none;
         }
+
+        .menu-container {
+            width: 100%;
+        }
+
+        .menu-row {
+            width: 100%;
+        }
+
+        .menu-btn {
+            padding: 10px;
+        }
+
+        .menu-text {
+            margin: 0;
+        }
+
+        .menu-active {
+            border-left: 5px solid #007bff;
+        }
     </style>
 </head>
 <body>
 
 <div class="menu">
-            <table class="menu-container" border="0">
-                <tr>
-                    <td style="padding:10px" colspan="2">
-                        <table border="0" class="profile-container">
-                            <tr>
-                            <td width="30%" style="padding-left:20px">
+    <table class="menu-container" border="0">
+        <tr>
+            <td style="padding:10px" colspan="2">
+                <table border="0" class="profile-container">
+                    <tr>
+                        <td width="30%" style="padding-left:20px">
                             <?php
+                            // session_start(); // Start session if not already started
+                            include("../connection.php"); // Include your connection file
+
                             // Assuming $useremail and $username are set somewhere in your code
                             $userEmail = $_SESSION['user']; // Retrieve user's email from session
                             $tableName = '';
@@ -93,44 +116,45 @@
                                 <input type="submit" id="submit" class="custom-file-input" value="Upload Image" name="submit">
                             </form>
                         </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="../logout.php" ><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
-                                </td>
-                            </tr>
-                    </table>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-dashbord menu-active menu-icon-dashbord-active" >
-                        <a href="index.php" class="non-style-link-menu non-style-link-menu-active"><div><p class="menu-text">Dashboard</p></a></div></a>
-                    </td>
-                </tr>
-                <tr class="menu-row">
-                    <td class="menu-btn menu-icon-appoinment">
-                        <a href="appointment.php" class="non-style-link-menu"><div><p class="menu-text">My Appointments</p></a></div>
-                    </td>
-                </tr>
-                
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-session">
-                        <a href="schedule.php" class="non-style-link-menu"><div><p class="menu-text">My Sessions</p></div></a>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-patient">
-                        <a href="patient.php" class="non-style-link-menu"><div><p class="menu-text">My Patients</p></a></div>
-                    </td>
-                </tr>
-                <tr class="menu-row" >
-                    <td class="menu-btn menu-icon-settings">
-                        <a href="settings.php" class="non-style-link-menu"><div><p class="menu-text">Settings</p></a></div>
-                    </td>
-                </tr>
-                
-            </table>
-        </div>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <a href="../logout.php"><input type="button" value="Log out" class="logout-btn btn-primary-soft btn"></a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
 
-        </body>
+        <?php
+        $currentPage = basename($_SERVER['SCRIPT_NAME']);
+        $menuItems = [
+            'index.php' => 'Dashboard',
+            'appointment.php' => 'My Appointments',
+            'schedule.php' => 'My Sessions',
+            'patient.php' => 'My Patients',
+            'settings.php' => 'Settings'
+        ];
+        $menuIcons = [
+            'index.php' => 'dashbord',
+            'appointment.php' => 'appoinment',
+            'schedule.php' => 'session',
+            'patient.php' => 'patient',
+            'settings.php' => 'settings'
+        ];
+
+        foreach ($menuItems as $page => $label) {
+            $activeClass = ($currentPage == $page) ? 'menu-active' : '';
+            echo "<tr class='menu-row'>";
+            echo "<td class='menu-btn menu-icon-$menuIcons[$page] $activeClass'>";
+            echo "<a href='$page' class='non-style-link-menu'><div><p class='menu-text'>$label</p></div></a>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
+
+    </table>
+</div>
+
+</body>
 </html>
